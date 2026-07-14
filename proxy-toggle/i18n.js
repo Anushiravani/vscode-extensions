@@ -28,7 +28,7 @@ function loadMessages() {
   }
 
   // مسیر پوشه اکستنشن
-  const extensionPath = vscode.extensions.getExtension('pouria.proxy-toggle')?.extensionPath;
+  const extensionPath = vscode.extensions.getExtension('Anushiravani.proxy-toggle')?.extensionPath;
   const basePath = extensionPath || __dirname;
 
   // ابتدا فایل پیش‌فرض (انگلیسی) را بارگذاری کن

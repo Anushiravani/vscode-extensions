@@ -20,5 +20,10 @@
   "config.systemCertificatesV2.description": "Http › Experimental: System Certificates V2 - بارگذاری آزمایشی گواهی‌های CA از سیستم‌عامل با روش عمومی‌تر",
   "config.fetchAdditionalSupport.description": "Http: Fetch Additional Support - افزودن پشتیبانی پروکسی و گواهی سیستم به fetch نود",
   "config.systemCertificates.description": "Http: System Certificates - بارگذاری گواهی‌های CA از سیستم‌عامل (در ویندوز و مک بعد از خاموش کردن نیاز به reload پنجره است)",
-  "config.systemCertificatesNode.description": "Http: System Certificates Node - بارگذاری گواهی‌های سیستم با پشتیبانی داخلی Node.js (بعد از تغییر reload کنید)"
+  "config.systemCertificatesNode.description": "Http: System Certificates Node - بارگذاری گواهی‌های سیستم با پشتیبانی داخلی Node.js (بعد از تغییر reload کنید)",
+
+  "runtime.proxyOn": "Proxy: ON",
+  "runtime.proxyOff": "Proxy: OFF",
+  "runtime.tooltipOn": "پروکسی روشن است\n{0}\nکلیک برای باز کردن تنظیمات",
+  "runtime.tooltipOff": "پروکسی خاموش است\nکلیک برای باز کردن تنظیمات"
 }
