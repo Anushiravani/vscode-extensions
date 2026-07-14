@@ -319,13 +319,18 @@ class ProxyViewProvider {
       async (message) => {
         if (message.command === 'toggle') {
           // Toggle مستقیم: فقط enabled رو تغییر بده و اعمال کن
+          // refresh رو غیرفعال کن تا HTML دوباره set نشه و listenerها از بین نرن
+          this._suppressRefresh = true;
           const config = vscode.workspace.getConfiguration('proxyToggle');
           await config.update('enabled', message.enabled, vscode.ConfigurationTarget.Global);
           applyProxySettings(message.enabled);
+          this._suppressRefresh = false;
           webviewView.webview.postMessage({ command: 'toggled', enabled: message.enabled });
         }
         if (message.command === 'save') {
+          this._suppressRefresh = true;
           const needsReload = await saveSettings(message.settings);
+          this._suppressRefresh = false;
           webviewView.webview.html = getHtml(message.settings);
           webviewView.webview.postMessage({ command: 'saved' });
 
@@ -349,7 +354,7 @@ class ProxyViewProvider {
   }
 
   refresh() {
-    if (view) {
+    if (view && !this._suppressRefresh) {
       view.webview.html = getHtml(getCurrentSettings());
     }
   }
