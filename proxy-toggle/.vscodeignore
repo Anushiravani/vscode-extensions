@@ -3,3 +3,5 @@
 node_modules/**
 .gitignore
 jsconfig.json
+make_icon.py
+make_banner.py

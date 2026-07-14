@@ -3,13 +3,47 @@
   "displayName": "%extension.displayName%",
   "description": "%extension.description%",
   "version": "0.0.2",
-  "publisher": "pouria",
+  "publisher": "Anushiravani",
+  "author": {
+    "name": "Pouria Anoushiravani",
+    "email": "pouria56@gmail.com",
+    "url": "https://github.com/Anushiravani"
+  },
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#0e639c",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.70.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Productivity",
+    "Network"
   ],
+  "keywords": [
+    "proxy",
+    "http proxy",
+    "socks",
+    "network",
+    "toggle",
+    "vpn",
+    "firewall",
+    "corporate proxy",
+    "ssl",
+    "certificates"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Anushiravani/vscode-extensions.git"
+  },
+  "homepage": "https://github.com/Anushiravani/vscode-extensions",
+  "bugs": {
+    "url": "https://github.com/Anushiravani/vscode-extensions/issues",
+    "email": "pouria56@gmail.com"
+  },
   "activationEvents": [
     "onStartupFinished"
   ],

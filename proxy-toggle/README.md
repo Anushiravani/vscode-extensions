@@ -1,87 +1,98 @@
-# Proxy Toggle / پراکسی تاگل
+# Proxy Toggle
 
-**A simple VSCode extension to toggle and configure proxy settings with a single button.**
+![Proxy Toggle](images/banner.png)
 
-**یک اکستنشن ساده برای روشن/خاموش کردن و تنظیم پروکسی داخل VSCode.**
+A simple and intuitive VSCode extension to toggle and configure proxy settings with a visual panel. No more digging through settings — just click the status bar button, edit your proxy configuration in a clean UI, and apply with one click.
 
----
+## Features
 
-## Features / امکانات
+- **Status bar toggle button** — Click to open the proxy configuration panel
+- **Visual configuration panel** — Edit all proxy settings in a clean webview form
+- **On/Off switch** — Toggle proxy on or off with a single switch
+- **Bilingual UI** — Automatically detects VSCode display language (English / Persian)
+- **Auto-apply** — Settings are applied to VSCode's `http.*` configuration instantly
+- **Reload prompts** — Notifies you when a setting requires a window reload
+- **Full HTTP proxy settings** — Manages all VSCode proxy-related settings
 
-| English | فارسی |
-|---|---|
-| On/Off toggle button in the status bar | دکمه روشن/خاموش در نوار وضعیت |
-| One-click apply of proxy settings to VSCode | اعمال سریع تنظیمات پروکسی روی VSCode با یک کلیک |
-| Full settings panel for all HTTP proxy-related options | پنل تنظیمات کامل برای همه‌ی تنظیمات HTTP مربوط به پروکسی |
-| Bilingual UI (English / Persian) — auto-detected from VSCode language | رابط کاربری دوزبانه (انگلیسی/فارسی) — تشخیص خودکار از زبان VSCode |
-| Reload Window popup for settings that require it | پاپ‌آپ Reload Window برای تنظیماتی که نیاز دارند |
+## Screenshots
 
-### Managed Settings / تنظیمات مدیریت‌شده
+### Status Bar Button
+The proxy toggle button appears in the bottom-right status bar showing current state (`Proxy: ON` or `Proxy: OFF`).
+
+### Configuration Panel
+Click the status bar button to open the visual panel where you can:
+- Toggle proxy on/off with a switch
+- Edit proxy URL, authorization, and SSL settings
+- Configure advanced settings like system certificates and network check intervals
+- Save & apply all changes with one button
+
+## Managed Settings
+
+The extension manages the following VSCode HTTP settings:
 
 | Setting | Description |
 |---|---|
-| `http.proxy` | Proxy address / آدرس پروکسی |
-| `http.proxyAuthorization` | Authorization header / هدر Authorization |
-| `http.proxyStrictSSL` | Strict SSL verification / بررسی دقیق SSL |
-| `http.proxySupport` | Support mode (`off`/`on`/`fallback`/`override`) / حالت پشتیبانی |
-| `http.noProxy` | Excluded hosts / هاست‌های مستثنی |
-| `http.useLocalProxyConfiguration` | Local proxy config during remote dev / تنظیمات محلی هنگام ریموت |
-| `http.experimental.networkInterfaceCheckInterval` | Network check interval (default 300) / بازه بررسی شبکه (پیش‌فرض ۳۰۰) |
-| `http.experimental.systemCertificatesV2` | Experimental CA certs V2 / گواهی آزمایشی V2 |
-| `http.fetchAdditionalSupport` | Extended fetch support / پشتیبانی اضافی fetch |
-| `http.systemCertificates` | OS CA certificates / گواهی‌های سیستم |
-| `http.systemCertificatesNode` | Node.js system certificates / گواهی سیستم با Node.js |
+| `http.proxy` | Proxy address (e.g. `http://127.0.0.1:1080`) |
+| `http.proxyAuthorization` | Authorization header for the proxy |
+| `http.proxyStrictSSL` | Enable strict SSL verification |
+| `http.proxySupport` | Proxy support mode: `off`, `on`, `fallback`, `override` |
+| `http.noProxy` | Hosts excluded from proxy (comma-separated) |
+| `http.useLocalProxyConfiguration` | Use local proxy config during remote development |
+| `http.experimental.networkInterfaceCheckInterval` | Network interface check interval in seconds (default: 300, -1 to disable) |
+| `http.experimental.systemCertificatesV2` | Experimental CA certificate loading from OS |
+| `http.fetchAdditionalSupport` | Extend Node.js fetch with proxy and certificate support |
+| `http.systemCertificates` | Load CA certificates from OS (reload required on Windows/macOS when turned off) |
+| `http.systemCertificatesNode` | Load system certificates via Node.js built-in support (reload required) |
 
----
+## Usage
 
-## Usage / نحوه استفاده
+1. **Open the panel**: Click the `Proxy: ON/OFF` button in the status bar (bottom-right), or run `Proxy Toggle: Open Proxy Panel` from the Command Palette (`Ctrl+Shift+P`).
+2. **Toggle proxy**: Use the on/off switch at the top of the panel.
+3. **Edit settings**: Modify any proxy settings in the form fields.
+4. **Save & Apply**: Click the "Save & Apply" button to save and apply all changes.
+5. **Reload if needed**: If a setting that requires a reload was changed, you'll be prompted to reload the window.
 
-1. Click the `Proxy: ON` / `Proxy: OFF` button in the status bar (bottom-right) to toggle the proxy.
-   - روی دکمه‌ی `Proxy: ON` / `Proxy: OFF` در نوار وضعیت (پایین-راست) کلیک کنید تا پروکسی روشن/خاموش شود.
-
-2. Run `Proxy Toggle: Open Proxy Settings` from the Command Palette (`Ctrl+Shift+P`) to open the settings panel.
-   - از Command Palette دستور `Proxy Toggle: باز کردن تنظیمات پروکسی` را اجرا کنید تا پنل تنظیمات باز شود.
-
-3. Set your desired values (proxy URL, Strict SSL, etc.). When the proxy is ON, changes are applied immediately.
-   - مقادیر دلخواه (آدرس پروکسی، Strict SSL و ...) را تنظیم کنید. هنگام روشن بودن پروکسی، تغییرات بلافاصله اعمال می‌شوند.
-
-4. If a setting requires a reload (e.g. `systemCertificates` on Windows/macOS, or `systemCertificatesNode`), a popup will appear asking you to reload the window.
-   - اگر تنظیمی نیاز به reload داشته باشد (مثل `systemCertificates` در ویندوز/مک یا `systemCertificatesNode`)، پاپ‌آپی نمایش داده می‌شود که بارگذاری مجدد پنجره را پیشنهاد می‌دهد.
-
----
-
-## Language / زبان
+## Language Support
 
 The extension automatically detects your VSCode display language:
-- If set to Persian (`fa`), the UI and settings descriptions appear in Persian.
-- Otherwise, English is used by default.
-
-اکستنشن به‌طور خودکار زبان نمایش VSCode شما را تشخیص می‌دهد:
-- اگر فارسی (`fa`) باشد، رابط کاربری و توضیحات تنظیمات به فارسی نمایش داده می‌شوند.
-- در غیر این صورت، انگلیسی استفاده می‌شود.
+- **Persian (`fa`)**: UI and settings descriptions appear in Persian (RTL layout)
+- **English (default)**: All text in English (LTR layout)
 
 To change VSCode language: `Ctrl+Shift+P` → `Configure Display Language`.
-برای تغییر زبان VSCode: `Ctrl+Shift+P` → `Configure Display Language`.
 
----
+## Installation
 
-## Installation / نصب
+### From Marketplace
+Search for "Proxy Toggle" in the VSCode Extensions panel (`Ctrl+Shift+X`).
 
+### From VSIX
 ```bash
-cd proxy-toggle
-npm install
-# Package into a .vsix file:
-npx @vscode/vsce package
-# Install in VSCode:
-code --install-extension proxy-toggle-0.0.1.vsix
+code --install-extension proxy-toggle-0.0.2.vsix
 ```
 
-Or for testing: open the folder in VSCode and press `F5` (requires `@types/vscode` and `vsce`).
+### From Source
+```bash
+git clone https://github.com/Anushiravani/vscode-extensions.git
+cd vscode-extensions/proxy-toggle
+npm install
+npx @vscode/vsce package
+code --install-extension proxy-toggle-0.0.2.vsix
+```
 
-یا برای تست: پوشه را در VSCode باز کنید و `F5` را بزنید.
+## Requirements
 
----
+- VSCode 1.70.0 or later
 
-## License / مجوز
+## License
 
-MIT
+[MIT](LICENSE)
+
+## Author
+
+**Pouria Anoushiravani**
+- Email: pouria56@gmail.com
+- GitHub: [Anushiravani](https://github.com/Anushiravani)
+
+## Issues & Feedback
+
+Report issues or request features at [GitHub Issues](https://github.com/Anushiravani/vscode-extensions/issues).
