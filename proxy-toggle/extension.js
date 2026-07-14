@@ -1,6 +1,6 @@
 const vscode = require('vscode');
 const i18n = require('./i18n');
-const proxyPanel = require('./proxyPanel');
+const { ProxyViewProvider, revealPanel, applyProxySettings } = require('./proxyView');
 
 /**
  * @type {vscode.StatusBarItem}
@@ -11,6 +11,11 @@ let statusBarItem;
  * @type {vscode.Disposable}
  */
 let configChangeListener;
+
+/**
+ * @type {ProxyViewProvider}
+ */
+let provider;
 
 /**
  * کلیدهای تنظیمات VSCode که این اکستنشن مدیریت می‌کند.
@@ -28,22 +33,6 @@ const PROXY_SETTINGS_MAP = [
   ['http.systemCertificates', 'proxyToggle.systemCertificates', true],
   ['http.systemCertificatesNode', 'proxyToggle.systemCertificatesNode', false],
 ];
-
-/**
- * اعمال یا پاک کردن تنظیمات پروکسی روی VSCode.
- * @param {boolean} enabled
- */
-function applyProxySettings(enabled) {
-  const config = vscode.workspace.getConfiguration('proxyToggle');
-  const httpConfig = vscode.workspace.getConfiguration('http');
-  for (const [httpKey, extKey, offDefault] of PROXY_SETTINGS_MAP) {
-    const value = enabled ? config.get(extKey) : offDefault;
-    httpConfig.update(httpKey, value, vscode.ConfigurationTarget.Global).then(
-      () => {},
-      (err) => console.error(`[proxyToggle] Error updating ${httpKey}:`, err)
-    );
-  }
-}
 
 /**
  * به‌روزرسانی نمایش دکمه در نوار وضعیت.
@@ -66,14 +55,18 @@ function updateStatusBar() {
 }
 
 /**
- * باز کردن پاپ‌آپ تنظیمات پروکسی (QuickPick).
+ * باز کردن پنل پایین (reveal + focus).
  */
 function openPanel() {
-  proxyPanel.showProxyPopup();
+  revealPanel();
+  // به‌روزرسانی محتوای view با مقادیر فعلی
+  if (provider) {
+    provider.refresh();
+  }
 }
 
 /**
- * باز کردن صفحه تنظیمات اکستنشن (Settings UI).
+ * باز کردن صفحه تنظیمات اکستنشن.
  */
 function openSettings() {
   vscode.commands.executeCommand('workbench.action.openSettings', 'proxyToggle');
@@ -85,19 +78,32 @@ function openSettings() {
 function activate(context) {
   updateStatusBar();
 
+  // ثبت WebviewViewProvider
+  provider = new ProxyViewProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider('proxyToggle.view', provider, {
+      webviewOptions: { retainContextWhenHidden: true },
+    })
+  );
+
   context.subscriptions.push(
     vscode.commands.registerCommand('proxyToggle.openPanel', openPanel),
     vscode.commands.registerCommand('proxyToggle.openSettings', openSettings)
   );
 
+  // گوش دادن به تغییرات تنظیمات برای به‌روزرسانی دکمه و view
   configChangeListener = vscode.workspace.onDidChangeConfiguration((e) => {
     if (e.affectsConfiguration('proxyToggle')) {
       updateStatusBar();
+      if (provider) {
+        provider.refresh();
+      }
     }
   });
   context.subscriptions.push(configChangeListener);
   context.subscriptions.push(statusBarItem);
 
+  // اعمال تنظیمات هنگام فعال‌سازی اگر پروکسی روشن است
   const initiallyEnabled = vscode.workspace.getConfiguration('proxyToggle').get('enabled');
   if (initiallyEnabled) {
     applyProxySettings(true);

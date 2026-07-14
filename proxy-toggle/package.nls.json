@@ -5,6 +5,9 @@
   "command.openPanel.title": "Proxy Toggle: Open Proxy Panel",
   "command.openSettings.title": "Proxy Toggle: Open Proxy Settings",
 
+  "view.container.title": "Proxy Toggle",
+  "view.title": "Proxy Settings",
+
   "config.title": "Proxy Toggle",
   "config.enabled.description": "Whether the proxy is enabled or disabled",
   "config.proxyUrl.description": "Proxy address (e.g. http://127.0.0.1:1080)",

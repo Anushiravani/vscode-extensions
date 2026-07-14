@@ -2,7 +2,7 @@
   "name": "proxy-toggle",
   "displayName": "%extension.displayName%",
   "description": "%extension.description%",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "Anushiravani",
   "author": {
     "name": "Pouria Anoushiravani",
@@ -59,6 +59,25 @@
         "title": "%command.openSettings.title%"
       }
     ],
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "proxyTogglePanel",
+          "title": "%view.container.title%",
+          "icon": "images/icon.png"
+        }
+      ]
+    },
+    "views": {
+      "proxyTogglePanel": [
+        {
+          "type": "webview",
+          "id": "proxyToggle.view",
+          "name": "%view.title%",
+          "visibility": "hidden"
+        }
+      ]
+    },
     "configuration": {
       "title": "%config.title%",
       "properties": {

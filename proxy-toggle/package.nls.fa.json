@@ -5,6 +5,9 @@
   "command.openPanel.title": "Proxy Toggle: باز کردن پنل پروکسی",
   "command.openSettings.title": "Proxy Toggle: باز کردن تنظیمات پروکسی",
 
+  "view.container.title": "Proxy Toggle",
+  "view.title": "تنظیمات پروکسی",
+
   "config.title": "Proxy Toggle",
   "config.enabled.description": "فعال یا غیرفعال بودن پروکسی",
   "config.proxyUrl.description": "آدرس پروکسی (مثال: http://127.0.0.1:1080)",
