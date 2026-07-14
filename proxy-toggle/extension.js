@@ -13,11 +13,6 @@ let statusBarItem;
 let configChangeListener;
 
 /**
- * @type {vscode.ExtensionContext}
- */
-let extensionContext;
-
-/**
  * کلیدهای تنظیمات VSCode که این اکستنشن مدیریت می‌کند.
  */
 const PROXY_SETTINGS_MAP = [
@@ -71,14 +66,14 @@ function updateStatusBar() {
 }
 
 /**
- * باز کردن پنل تنظیمات پروکسی (Webview).
+ * باز کردن پاپ‌آپ تنظیمات پروکسی (QuickPick).
  */
 function openPanel() {
-  proxyPanel.showProxyPanel(extensionContext);
+  proxyPanel.showProxyPopup();
 }
 
 /**
- * باز کردن صفحه تنظیمات اکستنشن (Settings JSON UI).
+ * باز کردن صفحه تنظیمات اکستنشن (Settings UI).
  */
 function openSettings() {
   vscode.commands.executeCommand('workbench.action.openSettings', 'proxyToggle');
@@ -88,8 +83,6 @@ function openSettings() {
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-  extensionContext = context;
-
   updateStatusBar();
 
   context.subscriptions.push(
@@ -97,7 +90,6 @@ function activate(context) {
     vscode.commands.registerCommand('proxyToggle.openSettings', openSettings)
   );
 
-  // گوش دادن به تغییرات تنظیمات برای به‌روزرسانی دکمه
   configChangeListener = vscode.workspace.onDidChangeConfiguration((e) => {
     if (e.affectsConfiguration('proxyToggle')) {
       updateStatusBar();
@@ -106,7 +98,6 @@ function activate(context) {
   context.subscriptions.push(configChangeListener);
   context.subscriptions.push(statusBarItem);
 
-  // اعمال تنظیمات هنگام فعال‌سازی اگر پروکسی روشن است
   const initiallyEnabled = vscode.workspace.getConfiguration('proxyToggle').get('enabled');
   if (initiallyEnabled) {
     applyProxySettings(true);
