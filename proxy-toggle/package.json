@@ -2,7 +2,7 @@
   "name": "proxy-toggle",
   "displayName": "%extension.displayName%",
   "description": "%extension.description%",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "publisher": "Anushiravani",
   "author": {
     "name": "Pouria Anoushiravani",
