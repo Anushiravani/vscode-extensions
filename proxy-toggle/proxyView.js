@@ -8,7 +8,6 @@ let view = null;
 
 /**
  * کلیدهای تنظیمات VSCode که این اکستنشن مدیریت می‌کند.
- * [کلید http.*, کلید اکستنشن, مقدار پیش‌فرض هنگام خاموش]
  */
 const PROXY_SETTINGS_MAP = [
   ['http.proxy', 'proxyToggle.proxyUrl', ''],
@@ -24,9 +23,6 @@ const PROXY_SETTINGS_MAP = [
   ['http.systemCertificatesNode', 'proxyToggle.systemCertificatesNode', false],
 ];
 
-/**
- * تعریف فیلدهای فرم.
- */
 const FIELD_DEFS = [
   { key: 'proxyUrl', type: 'text', placeholder: 'http://127.0.0.1:1080' },
   { key: 'proxyAuthorization', type: 'text', placeholder: '' },
@@ -41,10 +37,6 @@ const FIELD_DEFS = [
   { key: 'systemCertificatesNode', type: 'checkbox', reloadHint: true },
 ];
 
-/**
- * دریافت همه مقادیر فعلی.
- * @returns {Record<string, any>}
- */
 function getCurrentSettings() {
   const config = vscode.workspace.getConfiguration('proxyToggle');
   const settings = { enabled: config.get('enabled') };
@@ -54,10 +46,6 @@ function getCurrentSettings() {
   return settings;
 }
 
-/**
- * اعمال تنظیمات روی http.*
- * @param {boolean} enabled
- */
 function applyProxySettings(enabled) {
   const config = vscode.workspace.getConfiguration('proxyToggle');
   const httpConfig = vscode.workspace.getConfiguration('http');
@@ -70,11 +58,6 @@ function applyProxySettings(enabled) {
   }
 }
 
-/**
- * ذخیره تنظیمات از فرم و اعمال.
- * @param {Record<string, any>} settings
- * @returns {Promise<boolean>} نیاز به reload
- */
 async function saveSettings(settings) {
   const config = vscode.workspace.getConfiguration('proxyToggle');
   const beforeCerts = config.get('systemCertificates');
@@ -95,11 +78,6 @@ async function saveSettings(settings) {
   return certsChangedToOff || certsNodeChanged;
 }
 
-/**
- * ساخت HTML فرم فشرده.
- * @param {Record<string, any>} settings
- * @returns {string}
- */
 function getHtml(settings) {
   const isFa = i18n.getCurrentLocale().startsWith('fa');
   const dir = isFa ? 'rtl' : 'ltr';
@@ -110,16 +88,12 @@ function getHtml(settings) {
     off: isFa ? 'خاموش' : 'OFF',
     save: isFa ? 'ذخیره و اعمال' : 'Save & Apply',
     saved: isFa ? 'ذخیره شد ✓' : 'Saved ✓',
-    reload: isFa ? 'نیاز به بارگذاری مجدد' : 'Reload required',
-    reloadBtn: isFa ? 'بارگذاری مجدد' : 'Reload',
-    reloadDismiss: isFa ? 'الان نه' : 'Not now',
-    reloadMsg: isFa ? 'برای اعمال کامل، بارگذاری مجدد پنجره لازم است.' : 'A window reload is needed to fully apply changes.',
     proxyUrl: isFa ? 'آدرس پروکسی' : 'Proxy URL',
     proxyAuth: isFa ? 'Authorization' : 'Authorization',
     strictSSL: isFa ? 'Strict SSL' : 'Strict SSL',
     support: isFa ? 'حالت پشتیبانی' : 'Proxy Support',
     noProxy: isFa ? 'مستثنی (No Proxy)' : 'No Proxy',
-    localProxy: isFa ? 'تنظیمات محلی (ریموت)' : 'Local Config (Remote)',
+    localProxy: isFa ? 'تنظیمات محلی' : 'Local Config',
     netInterval: isFa ? 'بازه بررسی شبکه' : 'Net Check Interval',
     certV2: isFa ? 'گواهی V2' : 'Cert V2',
     fetchSupport: isFa ? 'پشتیبانی Fetch' : 'Fetch Support',
@@ -165,10 +139,14 @@ function getHtml(settings) {
   const basicHtml = fields.slice(0, 5).map(renderField).join('');
   const advHtml = fields.slice(5).map(renderField).join('');
 
+  // CSP: allow inline scripts and styles
+  const csp = `default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline';`;
+
   return `<!DOCTYPE html>
 <html lang="${isFa ? 'fa' : 'en'}" dir="${dir}">
 <head>
 <meta charset="UTF-8"/>
+<meta http-equiv="Content-Security-Policy" content="${csp}"/>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -283,11 +261,17 @@ function getHtml(settings) {
     const L = ${JSON.stringify({ on: L.on, off: L.off, saved: L.saved })};
     const en = document.getElementById('enabled');
     const tl = document.getElementById('tlabel');
+
+    // Toggle: بلافاصله وضعیت رو تغییر بده و ذخیره کن
     en.addEventListener('change', () => {
       const on = en.checked;
       tl.textContent = on ? L.on : L.off;
       tl.className = 'tlabel ' + (on ? 'on' : 'off');
+      // ارسال پیام toggle به extension
+      vscode.postMessage({ command: 'toggle', enabled: on });
     });
+
+    // Save & Apply
     document.getElementById('saveBtn').addEventListener('click', () => {
       const d = { enabled: en.checked };
       ${FIELD_DEFS.map(f => {
@@ -298,6 +282,8 @@ function getHtml(settings) {
       }).join('\n      ')}
       vscode.postMessage({ command: 'save', settings: d });
     });
+
+    // دریافت پیام از extension
     window.addEventListener('message', (e) => {
       const m = e.data;
       if (m.command === 'saved') {
@@ -305,27 +291,23 @@ function getHtml(settings) {
         t.classList.add('show');
         setTimeout(() => t.classList.remove('show'), 1500);
       }
+      if (m.command === 'toggled') {
+        const t = document.getElementById('toast');
+        t.textContent = m.enabled ? L.on : L.off;
+        t.classList.add('show');
+        setTimeout(() => { t.classList.remove('show'); t.textContent = L.saved; }, 1000);
+      }
     });
   </script>
 </body>
 </html>`;
 }
 
-/**
- * WebviewViewProvider
- */
 class ProxyViewProvider {
-  /**
-   * @param {vscode.ExtensionContext} context
-   */
   constructor(context) {
     this.context = context;
   }
 
-  /**
-   * @param {vscode.WebviewView} webviewView
-   * @param {vscode.WebviewViewResolveContext} resolveContext
-   */
   resolveWebviewView(webviewView) {
     view = webviewView;
     webviewView.webview.options = {
@@ -335,6 +317,13 @@ class ProxyViewProvider {
 
     webviewView.webview.onDidReceiveMessage(
       async (message) => {
+        if (message.command === 'toggle') {
+          // Toggle مستقیم: فقط enabled رو تغییر بده و اعمال کن
+          const config = vscode.workspace.getConfiguration('proxyToggle');
+          await config.update('enabled', message.enabled, vscode.ConfigurationTarget.Global);
+          applyProxySettings(message.enabled);
+          webviewView.webview.postMessage({ command: 'toggled', enabled: message.enabled });
+        }
         if (message.command === 'save') {
           const needsReload = await saveSettings(message.settings);
           webviewView.webview.html = getHtml(message.settings);
@@ -359,9 +348,6 @@ class ProxyViewProvider {
     );
   }
 
-  /**
-   * به‌روزرسانی محتوای view.
-   */
   refresh() {
     if (view) {
       view.webview.html = getHtml(getCurrentSettings());
@@ -369,9 +355,6 @@ class ProxyViewProvider {
   }
 }
 
-/**
- * نمایش/Reveal پنل پایین.
- */
 function revealPanel() {
   vscode.commands.executeCommand('proxyToggle.view.focus');
 }
