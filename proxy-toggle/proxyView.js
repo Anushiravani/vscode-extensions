@@ -142,6 +142,19 @@ function getHtml(settings) {
   // CSP: allow inline scripts and styles
   const csp = `default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline';`;
 
+  // Dropdown وضعیت پروکسی
+  const statusLabel = isFa ? 'وضعیت پروکسی' : 'Proxy Status';
+  const onLabel = isFa ? 'روشن (ON)' : 'On';
+  const offLabel = isFa ? 'خاموش (OFF)' : 'Off';
+  const statusDropdown = `
+    <div class="row status-row">
+      <label for="proxyStatus">${statusLabel}</label>
+      <select id="proxyStatus">
+        <option value="true" ${settings.enabled ? 'selected' : ''}>${onLabel}</option>
+        <option value="false" ${!settings.enabled ? 'selected' : ''}>${offLabel}</option>
+      </select>
+    </div>`;
+
   return `<!DOCTYPE html>
 <html lang="${isFa ? 'fa' : 'en'}" dir="${dir}">
 <head>
@@ -156,35 +169,6 @@ function getHtml(settings) {
     background: var(--vscode-editor-background);
     padding: 10px 12px;
   }
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--vscode-panel-border, #333);
-  }
-  .header h2 { font-size: 13px; font-weight: 600; }
-  .toggle-wrap { display: flex; align-items: center; gap: 8px; }
-  .switch { position: relative; width: 42px; height: 22px; }
-  .switch input { opacity: 0; width: 0; height: 0; }
-  .slider {
-    position: absolute; cursor: pointer; inset: 0;
-    background: var(--vscode-input-background, #3c3c3c);
-    border: 1px solid var(--vscode-input-border, #555);
-    border-radius: 22px; transition: 0.2s;
-  }
-  .slider:before {
-    content: ""; position: absolute;
-    height: 14px; width: 14px; left: 3px; bottom: 3px;
-    background: var(--vscode-button-foreground, #fff);
-    border-radius: 50%; transition: 0.2s;
-  }
-  input:checked + .slider { background: var(--vscode-button-background, #0e639c); }
-  input:checked + .slider:before { transform: translateX(18px); }
-  .tlabel { font-weight: 600; font-size: 12px; }
-  .tlabel.on { color: #4ec9b0; }
-  .tlabel.off { color: #f48771; }
   .section { margin-bottom: 10px; }
   .section-title {
     font-size: 10px; font-weight: 700; text-transform: uppercase;
@@ -193,6 +177,7 @@ function getHtml(settings) {
   }
   .row { display: flex; flex-direction: column; margin-bottom: 8px; }
   .row label { margin-bottom: 3px; font-weight: 500; font-size: 11px; }
+  .status-row select { font-weight: 600; }
   .cb {
     display: flex; align-items: center; gap: 6px;
     cursor: pointer; margin-bottom: 6px; font-size: 11px;
@@ -237,15 +222,9 @@ function getHtml(settings) {
 </style>
 </head>
 <body>
-  <div class="header">
-    <h2>${L.title}</h2>
-    <div class="toggle-wrap">
-      <span class="tlabel ${settings.enabled ? 'on' : 'off'}" id="tlabel">${settings.enabled ? L.on : L.off}</span>
-      <label class="switch"><input type="checkbox" id="enabled" ${settings.enabled ? 'checked' : ''}/><span class="slider"></span></label>
-    </div>
-  </div>
   <div class="section">
     <div class="section-title">${L.basic}</div>
+    ${statusDropdown}
     ${basicHtml}
   </div>
   <div class="section">
@@ -259,21 +238,17 @@ function getHtml(settings) {
   <script>
     const vscode = acquireVsCodeApi();
     const L = ${JSON.stringify({ on: L.on, off: L.off, saved: L.saved })};
-    const en = document.getElementById('enabled');
-    const tl = document.getElementById('tlabel');
+    const statusSelect = document.getElementById('proxyStatus');
 
-    // Toggle: بلافاصله وضعیت رو تغییر بده و ذخیره کن
-    en.addEventListener('change', () => {
-      const on = en.checked;
-      tl.textContent = on ? L.on : L.off;
-      tl.className = 'tlabel ' + (on ? 'on' : 'off');
-      // ارسال پیام toggle به extension
+    // تغییر وضعیت پروکسی از dropdown
+    statusSelect.addEventListener('change', () => {
+      const on = statusSelect.value === 'true';
       vscode.postMessage({ command: 'toggle', enabled: on });
     });
 
     // Save & Apply
     document.getElementById('saveBtn').addEventListener('click', () => {
-      const d = { enabled: en.checked };
+      const d = { enabled: statusSelect.value === 'true' };
       ${FIELD_DEFS.map(f => {
         if (f.type === 'checkbox') return `d.${f.key} = document.getElementById('${f.key}').checked;`;
         if (f.type === 'number') return `d.${f.key} = parseInt(document.getElementById('${f.key}').value, 10);`;
