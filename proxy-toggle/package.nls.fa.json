@@ -1,0 +1,37 @@
+{
+  "extension.displayName": "Proxy Toggle",
+  "extension.description": "یک اکستنشن ساده برای روشن/خاموش کردن و تنظیم پروکسی داخل VSCode",
+
+  "command.toggle.title": "Proxy Toggle: روشن/خاموش کردن پروکسی",
+  "command.setStatus.title": "Proxy Toggle: تنظیم وضعیت پروکسی",
+  "command.openPanel.title": "Proxy Toggle: باز کردن پنل پروکسی",
+  "command.openSettings.title": "Proxy Toggle: باز کردن تنظیمات پروکسی",
+
+  "config.title": "Proxy Toggle",
+  "config.enabled.description": "فعال یا غیرفعال بودن پروکسی",
+  "config.proxyUrl.description": "آدرس پروکسی (مثال: http://127.0.0.1:1080)",
+  "config.proxyAuthorization.description": "هدر Authorization برای پروکسی (اختیاری)",
+  "config.proxyStrictSSL.description": "فعال بودن بررسی دقیق SSL (Strict SSL)",
+  "config.proxySupport.description": "حالت پشتیبانی از پروکسی در VSCode",
+  "config.noProxy.description": "هاست‌هایی که از پروکسی مستثنی هستند (با کاما جدا کنید)",
+  "config.useLocalProxyConfiguration.description": "استفاده از تنظیمات پروکسی محلی هنگام توسعه از راه دور",
+  "config.networkInterfaceCheckInterval.description": "Http › Experimental: Network Interface Check Interval - بازه بررسی تغییرات شبکه برای باطل کردن کش پروکسی (ثانیه). -1 برای غیرفعال کردن.",
+  "config.systemCertificatesV2.description": "Http › Experimental: System Certificates V2 - بارگذاری آزمایشی گواهی‌های CA از سیستم‌عامل با روش عمومی‌تر",
+  "config.fetchAdditionalSupport.description": "Http: Fetch Additional Support - افزودن پشتیبانی پروکسی و گواهی سیستم به fetch نود",
+  "config.systemCertificates.description": "Http: System Certificates - بارگذاری گواهی‌های CA از سیستم‌عامل (در ویندوز و مک بعد از خاموش کردن نیاز به reload پنجره است)",
+  "config.systemCertificatesNode.description": "Http: System Certificates Node - بارگذاری گواهی‌های سیستم با پشتیبانی داخلی Node.js (بعد از تغییر reload کنید)",
+
+  "runtime.proxyOn": "Proxy: ON",
+  "runtime.proxyOff": "Proxy: OFF",
+  "runtime.tooltipOn": "پروکسی روشن است\n{0}\nکلیک برای خاموش کردن",
+  "runtime.tooltipOff": "پروکسی خاموش است\nکلیک برای روشن کردن",
+  "runtime.tooltipButton": "کلیک برای روشن/خاموش کردن پروکسی",
+  "runtime.turnedOn": "پروکسی روشن شد ✓",
+  "runtime.turnedOff": "پروکسی خاموش شد ✓",
+  "runtime.quickPickPlaceholder": "وضعیت پروکسی را انتخاب کنید",
+  "runtime.quickPickOn": "روشن (ON)",
+  "runtime.quickPickOff": "خاموش (OFF)",
+  "runtime.reloadMessage": "برای اعمال کامل تغییرات پروکسی، نیاز به بارگذاری مجدد پنجره (Reload Window) است.",
+  "runtime.reloadButton": "بارگذاری مجدد پنجره",
+  "runtime.reloadDismiss": "الان نه"
+}

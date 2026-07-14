@@ -1,0 +1,130 @@
+{
+  "name": "proxy-toggle",
+  "displayName": "%extension.displayName%",
+  "description": "%extension.description%",
+  "version": "0.0.2",
+  "publisher": "pouria",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "proxyToggle.openPanel",
+        "title": "%command.openPanel.title%"
+      },
+      {
+        "command": "proxyToggle.openSettings",
+        "title": "%command.openSettings.title%"
+      }
+    ],
+    "configuration": {
+      "title": "%config.title%",
+      "properties": {
+        "proxyToggle.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "%config.enabled.description%",
+          "scope": "window"
+        },
+        "proxyToggle.proxyUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:1080",
+          "description": "%config.proxyUrl.description%",
+          "scope": "window"
+        },
+        "proxyToggle.proxyAuthorization": {
+          "type": "string",
+          "default": "",
+          "description": "%config.proxyAuthorization.description%",
+          "scope": "window"
+        },
+        "proxyToggle.proxyStrictSSL": {
+          "type": "boolean",
+          "default": false,
+          "description": "%config.proxyStrictSSL.description%",
+          "scope": "window"
+        },
+        "proxyToggle.proxySupport": {
+          "type": "string",
+          "enum": [
+            "off",
+            "on",
+            "fallback",
+            "override"
+          ],
+          "default": "on",
+          "description": "%config.proxySupport.description%",
+          "scope": "window"
+        },
+        "proxyToggle.noProxy": {
+          "type": "string",
+          "default": "",
+          "description": "%config.noProxy.description%",
+          "scope": "window"
+        },
+        "proxyToggle.useLocalProxyConfiguration": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.useLocalProxyConfiguration.description%",
+          "scope": "window"
+        },
+        "proxyToggle.networkInterfaceCheckInterval": {
+          "type": "integer",
+          "default": 300,
+          "description": "%config.networkInterfaceCheckInterval.description%",
+          "scope": "window"
+        },
+        "proxyToggle.systemCertificatesV2": {
+          "type": "boolean",
+          "default": false,
+          "description": "%config.systemCertificatesV2.description%",
+          "scope": "window"
+        },
+        "proxyToggle.fetchAdditionalSupport": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.fetchAdditionalSupport.description%",
+          "scope": "window"
+        },
+        "proxyToggle.systemCertificates": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.systemCertificates.description%",
+          "scope": "window"
+        },
+        "proxyToggle.systemCertificatesNode": {
+          "type": "boolean",
+          "default": false,
+          "description": "%config.systemCertificatesNode.description%",
+          "scope": "window"
+        }
+      }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "proxyToggle.openPanel",
+          "when": "true"
+        },
+        {
+          "command": "proxyToggle.openSettings",
+          "when": "true"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "echo \"no build step\""
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.70.0"
+  }
+}

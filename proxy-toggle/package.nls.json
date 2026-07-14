@@ -1,0 +1,37 @@
+{
+  "extension.displayName": "Proxy Toggle",
+  "extension.description": "A simple extension to toggle and configure proxy settings inside VSCode",
+
+  "command.toggle.title": "Proxy Toggle: Turn Proxy On/Off",
+  "command.setStatus.title": "Proxy Toggle: Set Proxy Status",
+  "command.openPanel.title": "Proxy Toggle: Open Proxy Panel",
+  "command.openSettings.title": "Proxy Toggle: Open Proxy Settings",
+
+  "config.title": "Proxy Toggle",
+  "config.enabled.description": "Whether the proxy is enabled or disabled",
+  "config.proxyUrl.description": "Proxy address (e.g. http://127.0.0.1:1080)",
+  "config.proxyAuthorization.description": "Authorization header for the proxy (optional)",
+  "config.proxyStrictSSL.description": "Enable strict SSL verification",
+  "config.proxySupport.description": "VSCode proxy support mode",
+  "config.noProxy.description": "Hosts excluded from proxy (comma-separated)",
+  "config.useLocalProxyConfiguration.description": "Use local proxy configuration during remote development",
+  "config.networkInterfaceCheckInterval.description": "Http › Experimental: Network Interface Check Interval - Interval in seconds to check network interface changes to invalidate proxy cache. Set to -1 to disable.",
+  "config.systemCertificatesV2.description": "Http › Experimental: System Certificates V2 - Enable experimental loading of CA certificates from the OS using a more general approach",
+  "config.fetchAdditionalSupport.description": "Http: Fetch Additional Support - Extend Node.js fetch with proxy support and system certificates",
+  "config.systemCertificates.description": "Http: System Certificates - Load CA certificates from the OS. On Windows and macOS, a window reload is required after turning this off.",
+  "config.systemCertificatesNode.description": "Http: System Certificates Node - Load system certificates using Node.js built-in support. Reload the window after changing this setting.",
+
+  "runtime.proxyOn": "Proxy: ON",
+  "runtime.proxyOff": "Proxy: OFF",
+  "runtime.tooltipOn": "Proxy is ON\n{0}\nClick to turn off",
+  "runtime.tooltipOff": "Proxy is OFF\nClick to turn on",
+  "runtime.tooltipButton": "Click to toggle proxy on/off",
+  "runtime.turnedOn": "Proxy turned ON ✓",
+  "runtime.turnedOff": "Proxy turned OFF ✓",
+  "runtime.quickPickPlaceholder": "Select proxy status",
+  "runtime.quickPickOn": "Turn On (ON)",
+  "runtime.quickPickOff": "Turn Off (OFF)",
+  "runtime.reloadMessage": "To fully apply proxy changes, the window needs to be reloaded (Reload Window).",
+  "runtime.reloadButton": "Reload Window",
+  "runtime.reloadDismiss": "Not now"
+}
