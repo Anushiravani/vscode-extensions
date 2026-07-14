@@ -47,8 +47,8 @@ function updateStatusBar() {
     const url = vscode.workspace.getConfiguration('proxyToggle').get('proxyUrl') || '';
     statusBarItem.text = `$(shield) ${i18n.t('runtime.proxyOn')}`;
     statusBarItem.tooltip = i18n.t('runtime.tooltipOn', url);
-    statusBarItem.color = '#000000';
-    statusBarItem.backgroundColor = '#4ec9b0';
+    statusBarItem.color = undefined;
+    statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
   } else {
     statusBarItem.text = `$(circle-slash) ${i18n.t('runtime.proxyOff')}`;
     statusBarItem.tooltip = i18n.t('runtime.tooltipOff');
